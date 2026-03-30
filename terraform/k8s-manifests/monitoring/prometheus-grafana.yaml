@@ -1,0 +1,69 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: prometheus-monitoring-stack
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: 'https://prometheus-community.github.io/helm-charts'
+    chart: kube-prometheus-stack
+    targetRevision: 57.0.0
+    helm:
+      values: |
+        alertmanager:
+          # Báo cho Alertmanager lấy Secret ra để dùng
+          alertmanagerSpec:
+            secrets:
+              - telegram-bot-token
+
+          # Cấu hình bình thường, công khai trên Git
+          config:
+            global:
+              resolve_timeout: 5m
+            route:
+              receiver: 'telegram-bot'
+            receivers:
+            - name: 'telegram-bot'
+              telegram_configs:
+              - chat_id: 5959085245
+                bot_token_file: '/etc/alertmanager/secrets/telegram-bot-token/token'
+                send_resolved: true
+                message: |-
+                  🚨 <b>CẢNH BÁO TỪ KUBERNETES EKS</b> 🚨
+                  <b>Tên:</b> {{ .GroupLabels.alertname }}
+                  <b>Mô tả:</b> {{ range .Alerts }}{{ .Annotations.summary }}{{ end }}
+                parse_mode: HTML
+
+        # 2. Alert Rules (Cảnh báo khi RAM/CPU > 90%)
+        additionalPrometheusRulesMap:
+          custom-alerts:
+            groups:
+            - name: node-alerts
+              rules:
+              # Rule 1: RAM vượt quá 90% liên tục trong 2 phút
+              - alert: HighMemoryUsage
+                expr: (100 - ((node_memory_MemAvailable_bytes * 100) / node_memory_MemTotal_bytes)) > 90
+                for: 2m
+                labels:
+                  severity: critical
+                annotations:
+                  summary: "RAM của máy chủ {{ $labels.instance }} đã vượt quá 90%!"
+              
+              # Rule 2: CPU vượt quá 90% liên tục trong 2 phút
+              - alert: HighCPUUsage
+                expr: (100 - (avg by(instance) (rate(node_cpu_seconds_total{mode="idle"}[5m])) * 100)) > 90
+                for: 2m
+                labels:
+                  severity: critical
+                annotations:
+                  summary: "CPU của máy chủ {{ $labels.instance }} đã vượt quá 90%!"
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: monitoring
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
