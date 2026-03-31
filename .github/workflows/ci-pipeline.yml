@@ -30,3 +30,29 @@ jobs:
           directory: terraform/
           framework: terraform
           soft_fail: true
+  # --- THÊM TASK 4: TỰ BUILD VÀ PUSH DOCKER IMAGE ---
+  build-push-image:
+    runs-on: ubuntu-latest
+    # Yêu cầu: Chỉ Build Image khi 2 bước quét lỗi ở trên báo Xanh (Passed)
+    needs: [validate-k8s, security-scan-iac]
+    permissions:
+      contents: read
+      packages: write # Cấp quyền cho phép GitHub Actions đẩy Image lên GHCR
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Login to GitHub Container Registry (GHCR)
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }} # Dùng token nội bộ, không cần cấu hình!
+
+      - name: Build and Push Frontend Image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./src/frontend
+          push: true
+          # Tự động gắn mác Image bằng tên tài khoản GitHub của bạn
+          tags: ghcr.io/${{ github.repository_owner }}/online-boutique-frontend:latest
