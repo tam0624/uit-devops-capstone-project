@@ -2,9 +2,8 @@ name: CI Pipeline - Validation & Security
 
 on:
   push:
-    paths:
-      - "k8s-manifests/**"
-      - "terraform/**"
+    branches:
+      - main
 
 jobs:
   # --- JOB 1: Kiểm tra lỗi cú pháp YAML (Bạn đã làm) ---
