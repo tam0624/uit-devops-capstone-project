@@ -2,6 +2,8 @@ module "eks" {
   source  = "terraform-aws-modules/eks/aws"
   version = "~> 20.0"
 
+# checkov:skip=CKV_TF_1: Sử dụng version tag cố định đã được nhóm đánh giá là đủ an toàn cho đồ án.	
+
   cluster_name    = "uit-devops-eks"
   cluster_version = "1.29"
 

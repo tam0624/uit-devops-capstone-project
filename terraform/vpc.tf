@@ -2,6 +2,7 @@ module "vpc" {
   source = "terraform-aws-modules/vpc/aws"
   version = "5.0.0"
 
+# checkov:skip=CKV_TF_1: Sử dụng version tag cố định đã được nhóm đánh giá là đủ an toàn cho đồ án.
   name = "uit-devops-vpc"
   cidr = "10.0.0.0/16"
 

@@ -6,24 +6,23 @@ on:
       - main
 
 jobs:
-  # --- JOB 1: Kiểm tra lỗi cú pháp YAML (Bạn đã làm) ---
   validate-k8s:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4 # Đã đổi sang v4 để hết cảnh báo vàng
 
       - name: Kubeconform Validation
         uses: docker://ghcr.io/yannh/kubeconform:latest
         with:
-          args: "-summary -output json k8s-manifests/"
+          # Thêm cờ ignore-missing-schemas để nó tha cho file ArgoCD
+          args: "-ignore-missing-schemas -summary -output json k8s-manifests/"
 
-  # --- JOB 2: Quét bảo mật Terraform IaC (TASK 5) ---
   security-scan-iac:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4 # Đã đổi sang v4 để hết cảnh báo vàng
 
       - name: Checkov Security Scan
         uses: bridgecrewio/checkov-action@master
