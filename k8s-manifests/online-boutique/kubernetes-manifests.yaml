@@ -782,7 +782,7 @@ spec:
                 - ALL
             privileged: false
             readOnlyRootFilesystem: true
-            image: ghcr.io/tam0624/online-boutique-frontend:latest
+            image: gcr.io/google-samples/microservices-demo/frontend:v0.10.5
           ports:
             - containerPort: 8080
           readinessProbe:
