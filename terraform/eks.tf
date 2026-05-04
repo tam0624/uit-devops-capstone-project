@@ -5,7 +5,7 @@ module "eks" {
 # checkov:skip=CKV_TF_1: Sử dụng version tag cố định đã được nhóm đánh giá là đủ an toàn cho đồ án.	
 
   cluster_name    = "uit-devops-eks"
-  cluster_version = "1.29"
+  cluster_version = "1.30"
 
   vpc_id                         = module.vpc.vpc_id
   subnet_ids                     = module.vpc.private_subnets
@@ -20,7 +20,7 @@ module "eks" {
       max_size     = 3
       desired_size = 2
 
-      instance_types = ["t3.small"] # Tiết kiệm tiền cho sinh viên
+      instance_types = ["t3.medium"] # Tiết kiệm tiền cho sinh viên
       capacity_type  = "SPOT"        # Rẻ hơn 70% và giúp báo cáo tính năng Self-healing
       ami_type = "AL2_x86_64"
       labels = {

@@ -6,16 +6,16 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: '[https://github.com/tam0624/uit-devops-capstone-project.git](https://github.com/tam0624/uit-devops-capstone-project.git)'
+    repoURL: 'https://github.com/tam0624/uit-devops-capstone-project.git'
     path: k8s-manifests/online-boutique
-    targetRevision: HEAD # Luôn lấy code mới nhất
+    targetRevision: HEAD
   destination:
-    server: 'https://kubernetes.default.svc' 
-    namespace: monitoring
+    server: 'https://kubernetes.default.svc'
+    namespace: default
   syncPolicy:
     automated:
-      prune: true      # Xóa resources nếu file YAML trên Git bị xóa
-      selfHeal: true   # TỰ ĐỘNG PHỤC HỒI nếu ai đó sửa cấu hình trực tiếp trên cụm
+      prune: true
+      selfHeal: true
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
@@ -25,15 +25,15 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: '[https://github.com/tam0624/uit-devops-capstone-project.git](https://github.com/tam0624/uit-devops-capstone-project.git)'
+    repoURL: 'https://github.com/tam0624/uit-devops-capstone-project.git'
     path: k8s-manifests/monitoring
     targetRevision: HEAD
   destination:
     server: 'https://kubernetes.default.svc'
-    namespace: default
+    namespace: monitoring
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
     syncOptions:
-      - CreateNamespace=true # Tự động tạo namespace monitoring nếu chưa có
+      - CreateNamespace=true
