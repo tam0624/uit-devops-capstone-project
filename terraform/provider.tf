@@ -13,7 +13,7 @@ terraform {
     bucket         = "uit-devops-terraform-state-unique" # Tên bucket bạn vừa tạo
     key            = "global/s3/terraform.tfstate"       # Đường dẫn file trong bucket
     region         = "ap-southeast-1"
-    dynamodb_table = "terraform-state-locking"           # Tên table DynamoDB vừa tạo
+    use_lockfile   = true                                # Use DynamoDB for state locking
     encrypt        = true                                # Mã hóa file để bảo mật
   }
   
