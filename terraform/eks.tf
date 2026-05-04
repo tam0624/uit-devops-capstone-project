@@ -22,7 +22,7 @@ module "eks" {
 
       instance_types = ["t3.small"] # Tiết kiệm tiền cho sinh viên
       capacity_type  = "SPOT"        # Rẻ hơn 70% và giúp báo cáo tính năng Self-healing
-
+      ami_type = "AL2_x86_64"
       labels = {
         Environment = "dev"
         Project     = "online-boutique"
