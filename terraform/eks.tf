@@ -15,10 +15,10 @@ module "eks" {
   enable_cluster_creator_admin_permissions = true
 
   eks_managed_node_groups = {
-    main = {
+    main_v2 = {
       min_size     = 2
       max_size     = 4
-      desired_size = 3
+      desired_size = 2
 
       instance_types = ["t3.small"] # QUAY LẠI T3.SMALL
       capacity_type  = "ON_DEMAND"       # Rẻ hơn 70% và giúp báo cáo tính năng Self-healing
