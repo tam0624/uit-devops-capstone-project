@@ -20,8 +20,8 @@ module "eks" {
       max_size     = 3
       desired_size = 2
 
-      instance_types = ["t3.medium"] # Tiết kiệm tiền cho sinh viên
-      capacity_type  = "SPOT"        # Rẻ hơn 70% và giúp báo cáo tính năng Self-healing
+      instance_types = ["t3.small"] # QUAY LẠI T3.SMALL
+      capacity_type  = "ON_DEMAND"       # Rẻ hơn 70% và giúp báo cáo tính năng Self-healing
       ami_type = "AL2_x86_64"
       labels = {
         Environment = "dev"

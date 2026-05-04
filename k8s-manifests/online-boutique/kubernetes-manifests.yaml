@@ -64,7 +64,7 @@ spec:
           livenessProbe:
             grpc:
               port: 7000
-          resources:
+          # resources:
             requests:
               cpu: 100m
               memory: 64Mi
@@ -166,7 +166,7 @@ spec:
               value: "10"
             - name: RATE
               value: "1"
-          resources:
+          # resources:
             requests:
               cpu: 300m
               memory: 256Mi
@@ -237,7 +237,7 @@ spec:
           livenessProbe:
             grpc:
               port: 3550
-          resources:
+          # resources:
             requests:
               cpu: 100m
               memory: 64Mi
@@ -332,7 +332,7 @@ spec:
               value: "currencyservice:7000"
             - name: CART_SERVICE_ADDR
               value: "cartservice:7070"
-          resources:
+          # resources:
             requests:
               cpu: 100m
               memory: 64Mi
@@ -405,7 +405,7 @@ spec:
           livenessProbe:
             grpc:
               port: 50051
-          resources:
+          # resources:
             requests:
               cpu: 100m
               memory: 64Mi
@@ -483,7 +483,7 @@ spec:
           env:
             - name: REDIS_ADDR
               value: "redis-cart:6379"
-          resources:
+          # resources:
             requests:
               cpu: 200m
               memory: 64Mi
@@ -563,7 +563,7 @@ spec:
           volumeMounts:
             - mountPath: /data
               name: redis-data
-          resources:
+          # resources:
             limits:
               memory: 256Mi
               cpu: 125m
@@ -636,7 +636,7 @@ spec:
             periodSeconds: 5
             grpc:
               port: 8080
-          resources:
+          # resources:
             requests:
               cpu: 100m
               memory: 64Mi
@@ -709,7 +709,7 @@ spec:
           livenessProbe:
             grpc:
               port: 50051
-          resources:
+          # resources:
             requests:
               cpu: 100m
               memory: 64Mi
@@ -835,7 +835,7 @@ spec:
           # As part of an optional Google Cloud demo, you can run an optional microservice called the "packaging service".
           # - name: PACKAGING_SERVICE_URL
           #   value: "" # This value would look like "http://123.123.123"
-          resources:
+          # resources:
             requests:
               cpu: 100m
               memory: 64Mi
@@ -927,7 +927,7 @@ spec:
               value: "productcatalogservice:3550"
             - name: DISABLE_PROFILER
               value: "1"
-          resources:
+          # resources:
             requests:
               cpu: 100m
               memory: 220Mi
@@ -992,7 +992,7 @@ spec:
           env:
             - name: PORT
               value: "9555"
-          resources:
+          # resources:
             requests:
               cpu: 200m
               memory: 180Mi
