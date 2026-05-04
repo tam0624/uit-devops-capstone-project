@@ -1,0 +1,39 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: online-boutique
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: '[https://github.com/tam0624/uit-devops-capstone-project.git](https://github.com/tam0624/uit-devops-capstone-project.git)'
+    path: k8s-manifests/online-boutique
+    targetRevision: HEAD # Luôn lấy code mới nhất
+  destination:
+    server: '[https://kubernetes.default.svc](https://kubernetes.default.svc)' # Triển khai ngay trên cụm EKS hiện tại
+    namespace: default
+  syncPolicy:
+    automated:
+      prune: true      # Xóa resources nếu file YAML trên Git bị xóa
+      selfHeal: true   # TỰ ĐỘNG PHỤC HỒI nếu ai đó sửa cấu hình trực tiếp trên cụm
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: monitoring
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: '[https://github.com/tam0624/uit-devops-capstone-project.git](https://github.com/tam0624/uit-devops-capstone-project.git)'
+    path: k8s-manifests/monitoring
+    targetRevision: HEAD
+  destination:
+    server: '[https://kubernetes.default.svc](https://kubernetes.default.svc)'
+    namespace: monitoring
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true # Tự động tạo namespace monitoring nếu chưa có
