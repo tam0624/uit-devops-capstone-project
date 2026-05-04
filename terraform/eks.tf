@@ -17,12 +17,13 @@ module "eks" {
   eks_managed_node_groups = {
     main = {
       min_size     = 2
-      max_size     = 3
-      desired_size = 2
+      max_size     = 4
+      desired_size = 3
 
       instance_types = ["t3.small"] # QUAY LẠI T3.SMALL
       capacity_type  = "ON_DEMAND"       # Rẻ hơn 70% và giúp báo cáo tính năng Self-healing
       ami_type = "AL2_x86_64"
+      bootstrap_extra_args = "--use-max-pods false --kubelet-extra-args '--max-pods=110'"
       labels = {
         Environment = "dev"
         Project     = "online-boutique"
