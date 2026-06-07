@@ -15,9 +15,9 @@ module "eks" {
   enable_cluster_creator_admin_permissions = true
 
   eks_managed_node_groups = {
-    main_v2 = {
-      min_size     = 2
-      max_size     = 4
+    main = {
+      min_size     = 3
+      max_size     = 5
       desired_size = 3
 
       instance_types = ["t3.small"] # QUAY LẠI T3.SMALL
