@@ -18,7 +18,7 @@ module "eks" {
     main_v2 = {
       min_size     = 2
       max_size     = 4
-      desired_size = 2
+      desired_size = 3
 
       instance_types = ["t3.small"] # QUAY LẠI T3.SMALL
       capacity_type  = "ON_DEMAND"       # Rẻ hơn 70% và giúp báo cáo tính năng Self-healing
