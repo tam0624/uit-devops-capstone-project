@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: thesis-master-app
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: 'https://github.com/[tên-github]/[tên-repo].git' # Thay bằng link của nhóm
+    targetRevision: main
+    path: k8s-manifests # Trỏ thẳng vào thư mục cha
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: default
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

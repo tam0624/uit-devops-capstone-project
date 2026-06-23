@@ -1,0 +1,35 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: online-boutique-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+spec:
+  ingressClassName: nginx
+  rules:
+  - http:
+      paths:
+      # Định tuyến vào Frontend (Mặc định)
+      - path: /()(.*)
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: frontend
+            port:
+              number: 80
+      # Định tuyến vào App 1
+      - path: /api/discount(/|$)(.*)
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: discount-service
+            port:
+              number: 8000
+      # Định tuyến vào App 2
+      - path: /api/loyalty(/|$)(.*)
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: loyalty-service
+            port:
+              number: 8080
