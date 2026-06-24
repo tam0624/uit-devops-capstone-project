@@ -46,10 +46,10 @@ Write-Host " - Dang mo cua so ngam cho ArgoCD (Port 8080)..." -ForegroundColor G
 Start-Process powershell -ArgumentList "-NoExit -Command `"title ArgoCD-PortForward; Write-Host 'Dang mo port ArgoCD (Vui long khong tat cua so nay)...' -ForegroundColor Cyan; kubectl port-forward svc/argocd-server -n argocd 8080:443`""
 
 Write-Host " - Dang mo cua so ngam cho Grafana (Port 3000)..." -ForegroundColor Gray
-Start-Process powershell -ArgumentList "-NoExit -Command `"title Grafana-PortForward; Write-Host 'Cho ArgoCD keo Grafana ve cum (Co the mat 2-3 phut)...' -ForegroundColor Yellow; while (!(kubectl get svc -n monitoring kube-prometheus-stack-grafana 2>\$null)) { Start-Sleep -Seconds 5 }; Write-Host 'Da tim thay Grafana, dang mo port (Vui long khong tat cua so nay)...' -ForegroundColor Cyan; kubectl port-forward svc/kube-prometheus-stack-grafana -n monitoring 3000:80`""
+Start-Process powershell -ArgumentList "-NoExit -Command `"title Grafana-PortForward; Write-Host 'Cho ArgoCD keo Grafana ve cum (Co the mat 2-3 phut)...' -ForegroundColor Yellow; while (`$True) { `$svc = kubectl get svc -n monitoring -o name | Select-String 'grafana'; if (`$svc) { `$GRAFANA_SVC = `$svc.ToString().Replace('service/','').Trim(); Write-Host `"Da tim thay Grafana (`$GRAFANA_SVC), dang mo port (Vui long khong tat cua so nay)...`" -ForegroundColor Cyan; kubectl port-forward svc/`$GRAFANA_SVC -n monitoring 3000:80; break } else { Start-Sleep -Seconds 5 } }`""
 
 Write-Host "`n==================================================" -ForegroundColor Cyan
-Write-Host " HOAN TAT! HE THONG DA SAN SANG" -ForegroundColor Green
+Write-Host " HOAN TAT BANG 1 CLICK! HE THONG DA SAN SANG" -ForegroundColor Green
 Write-Host "==================================================" -ForegroundColor Cyan
 Write-Host "`n[ THONG TIN TRUY CAP ]" -ForegroundColor White
 Write-Host "1. Online Boutique: " -ForegroundColor Magenta -NoNewline; Write-Host "http://localhost" 
@@ -59,4 +59,4 @@ Write-Host "   => Mat khau:     " -ForegroundColor DarkGray -NoNewline; Write-Ho
 Write-Host "3. Grafana UI:      " -ForegroundColor Magenta -NoNewline; Write-Host "http://localhost:3000"
 Write-Host "   => Tai khoan:    " -ForegroundColor DarkGray -NoNewline; Write-Host "admin" -ForegroundColor White
 Write-Host "   => Mat khau:     " -ForegroundColor DarkGray -NoNewline; Write-Host "prom-operator" -ForegroundColor Yellow
-Write-Host ""
+
