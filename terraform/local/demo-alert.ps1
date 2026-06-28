@@ -20,9 +20,11 @@ $jsonPayload = @"
 
 Write-Host "BUOC 2: Gui alert toi Alertmanager qua pod tam ($AlertmanagerUrl)" -ForegroundColor Cyan
 
-# -w de lay ca HTTP status code, khong chi body, de biet chinh xac request co thanh cong khong
-$curlOutput = kubectl run trigger-alert --image=curlimages/curl --restart=Never -n $Namespace --rm -i -- `
-  curl -s -w "`nHTTP_STATUS:%{http_code}" -X POST -H "Content-Type: application/json" -d $jsonPayload $AlertmanagerUrl
+# QUAN TRONG: KHONG truyen JSON qua argument cho native exe tren Windows.
+# PowerShell hay lam mat dau " khi build command line cho kubectl/curl, lam hong JSON.
+# => Pipe JSON qua stdin, dung "curl -d @-" de doc body tu stdin, tranh hoan toan loi quote.
+$curlOutput = $jsonPayload | kubectl run trigger-alert --image=curlimages/curl --restart=Never -n $Namespace --rm -i -- `
+  curl -s -w "`nHTTP_STATUS:%{http_code}" -X POST -H "Content-Type: application/json" -d "@-" $AlertmanagerUrl
 
 if ($LASTEXITCODE -ne 0) {
     Write-Host "LOI: kubectl run / pod curl chay khong thanh cong (exit code $LASTEXITCODE)." -ForegroundColor Red
@@ -33,7 +35,8 @@ if ($LASTEXITCODE -ne 0) {
 Write-Host "Output tu curl:" -ForegroundColor DarkGray
 Write-Host $curlOutput
 
-if ($curlOutput -match "HTTP_STATUS:(\d+)") {
+$curlOutputStr = $curlOutput | Out-String
+if ($curlOutputStr -match "HTTP_STATUS:(\d+)") {
     $statusCode = $matches[1]
     if ($statusCode -eq "200") {
         Write-Host "BUOC 2 OK: Alertmanager tra ve HTTP 200 - alert da duoc nhan." -ForegroundColor Green
