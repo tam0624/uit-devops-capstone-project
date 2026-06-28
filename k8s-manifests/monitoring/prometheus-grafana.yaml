@@ -12,6 +12,7 @@ spec:
     helm:
       values: |
         alertmanager:
+          enabled: true
           alertmanagerSpec:
             secrets:
               - telegram-secret
@@ -26,6 +27,7 @@ spec:
               repeat_interval: 1h
               receiver: 'telegram-bot'
             receivers:
+              - name: 'null'
               - name: 'telegram-bot'
                 telegram_configs:
                   - chat_id: 5959085245
