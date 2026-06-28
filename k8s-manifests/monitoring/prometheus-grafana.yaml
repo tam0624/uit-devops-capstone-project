@@ -11,6 +11,15 @@ spec:
     targetRevision: 57.0.0
     helm:
       values: |
+        kubeControllerManager:
+          enabled: false
+        kubeScheduler:
+          enabled: false
+        kubeProxy:
+          enabled: false
+        kubeEtcd:
+          enabled: false
+
         alertmanager:
           enabled: true
           alertmanagerSpec:
