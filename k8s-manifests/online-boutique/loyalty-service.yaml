@@ -14,8 +14,7 @@ spec:
     spec:
       containers:
       - name: server
-         # Tạm thời dùng image Nginx để test, lúc nào bạn build xong image Node.js thì thay vào đây
-        image: nginx:alpine
+        image: loyalty-service:v1
         ports:
         - containerPort: 8080
 ---

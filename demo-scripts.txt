@@ -1,0 +1,29 @@
+#port argocd
+kubectl port-forward svc/argocd-server -n argocd 8080:443
+
+#port grafana 
+kubectl port-forward svc/prometheus-monitoring-stack-grafana -n monitoring 3000:80
+
+
+PHẦN 1: CÁCH DEMO 2 MICROSERVICES KHI KHÔNG CÓ FRONTEND
+Bạn sẽ biểu diễn luồng chạy của 2 dịch vụ này thông qua Nhật ký hệ thống (Real-time Logs). Khi thuyết trình, bạn hãy chia đôi màn hình: Một nửa là Trình duyệt (web Online Boutique), một nửa là Terminal chạy lệnh xem Log.
+
+1. Kịch bản Demo cho Discount Service (Python):
+Trước khi thực hiện thanh toán trên web, bạn mở Terminal và chạy lệnh theo dõi log của dịch vụ này:
+
+Bash
+kubectl logs -f deployment/discountservice -n online-boutique --tail=10
+Thao tác: Bạn lên web, chọn sản phẩm, vào giỏ hàng và bấm "Place Order".
+
+Kết quả chứng minh với Hội đồng: Ngay tại khoảnh khắc bấm nút, luồng gọi gRPC từ checkoutservice sẽ kích hoạt discountservice. Trên màn hình Terminal sẽ lập tức nhảy ra các dòng log (đã được bạn cấu hình print hoặc logging trong code) dạng:
+[INFO] Received gRPC request for Order ID: XXXX. Applying 20% discount code...
+
+2. Kịch bản Demo cho Loyalty Service (Node.js):
+Tương tự, bạn mở một tab Terminal khác và chạy lệnh:
+
+Bash
+kubectl logs -f deployment/loyaltyservice -n online-boutique --tail=10
+Kết quả chứng minh với Hội đồng: Ngay sau khi đơn hàng hoàn tất, màn hình log của Loyalty sẽ lập tức xuất hiện dòng trạng thái:
+[SUCCESS] Order XXXX processed. Calculated 50 loyalty points added to User account.
+
+Lời thoại ghi điểm với Hội đồng: "Thưa thầy cô, vì đây là kiến trúc Microservices phân tán, 2 dịch vụ mở rộng này hoạt động hoàn toàn ở tầng Backend và giao tiếp qua gRPC để tối ưu hiệu năng. Nhóm không can thiệp vào mã nguồn Frontend gốc của Google mà chứng minh tính hoạt động của dịch vụ thông qua việc bắt trực tiếp luồng Log thời gian thực (Real-time Log Streaming) của các Container khi có Event thanh toán xảy ra."

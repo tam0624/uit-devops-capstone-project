@@ -12,10 +12,10 @@ spec:
     helm:
       values: |
         alertmanager:
-          # Báo cho Alertmanager lấy Secret ra để dùng
+          # 1. Báo cho Alertmanager lấy Secret ra để dùng
           alertmanagerSpec:
             secrets:
-              - telegram-bot-token
+              - telegram-secret # ĐÃ SỬA: Khớp với tên Secret vừa tạo
 
           # Cấu hình bình thường, công khai trên Git
           config:
@@ -26,8 +26,9 @@ spec:
             receivers:
             - name: 'telegram-bot'
               telegram_configs:
-              - chat_id: 5959085245
-                bot_token_file: '/etc/alertmanager/secrets/telegram-bot-token/token'
+              - chat_id: 5959085245 # Giữ nguyên Chat ID của bạn
+                # ĐÃ SỬA: Trỏ đúng đường dẫn mount của secret mới
+                bot_token_file: '/etc/alertmanager/secrets/telegram-secret/bot_token' 
                 send_resolved: true
                 message: |-
                   🚨 <b>CẢNH BÁO TỪ KUBERNETES EKS</b> 🚨

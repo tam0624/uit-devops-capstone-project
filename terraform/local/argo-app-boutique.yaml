@@ -6,7 +6,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: 'https://github.com/[tên-github-của-bạn]/[tên-repo].git' # Sửa lại link repo nhóm
+    repoURL: 'https://github.com/tam0624/uit-devops-capstone-project.git'
     targetRevision: main
     path: k8s-manifests/online-boutique
   destination:
