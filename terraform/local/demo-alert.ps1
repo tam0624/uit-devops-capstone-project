@@ -1,8 +1,6 @@
 # ============================================================
-# DEMO GUI ALERT TELEGRAM - co kiem tra loi tung buoc
-# Cach chay (de tranh loi UnauthorizedAccess/Execution Policy):
+#                   DEMO GUI ALERT TELEGRAM
 #   powershell -ExecutionPolicy Bypass -File .\demo-alert.ps1
-# (hoac mot lan duy nhat: Set-ExecutionPolicy -Scope CurrentUser RemoteSigned)
 # ============================================================
 
 $Namespace = "monitoring"
@@ -20,9 +18,7 @@ $jsonPayload = @"
 
 Write-Host "BUOC 2: Gui alert toi Alertmanager qua pod tam ($AlertmanagerUrl)" -ForegroundColor Cyan
 
-# QUAN TRONG: KHONG truyen JSON qua argument cho native exe tren Windows.
-# PowerShell hay lam mat dau " khi build command line cho kubectl/curl, lam hong JSON.
-# => Pipe JSON qua stdin, dung "curl -d @-" de doc body tu stdin, tranh hoan toan loi quote.
+
 $curlOutput = $jsonPayload | kubectl run trigger-alert --image=curlimages/curl --restart=Never -n $Namespace --rm -i -- `
   curl -s -w "`nHTTP_STATUS:%{http_code}" -X POST -H "Content-Type: application/json" -d "@-" $AlertmanagerUrl
 

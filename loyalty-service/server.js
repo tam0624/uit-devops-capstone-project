@@ -7,6 +7,7 @@ const server = http.createServer((req, res) => {
     res.end("Loyalty points updated\n");
 });
 
+// Lệnh này giữ cho ứng dụng không bao giờ bị tắt (Completed)
 server.listen(8080, '0.0.0.0', () => {
     console.log("Loyalty Service Backend started on port 8080...");
 });
