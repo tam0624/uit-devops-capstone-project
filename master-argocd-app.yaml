@@ -6,11 +6,11 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: 'https://github.com/tam0624/uit-devops-capstone-project.git' # Thay bằng link của nhóm
+    repoURL: 'https://github.com/tam0624/uit-devops-capstone-project.git'
     targetRevision: main
-    path: k8s-manifests # Trỏ thẳng vào thư mục cha
-    directory:
-      recurse: true
+    # [SỬA ĐƯỜNG DẪN]: Chỉ trỏ vào thư mục cấu hình của ArgoCD
+    path: k8s-manifests/argocd 
+    # [XÓA BỎ KHỐI directory.recurse]
   destination:
     server: 'https://kubernetes.default.svc'
     namespace: default
